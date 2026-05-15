@@ -35,17 +35,54 @@ jobs:
           root_file: main.tex
           latexmk_use_bibtex: true
 
-      - name: Prepare GitHub Pages Files
+      - name: Generate OG Image and Favicon from PDF
         run: |
+          pdftoppm -r 150 -png -singlefile main.pdf og-image
+          pdftoppm -r 32  -png -singlefile main.pdf favicon-raw
+          convert favicon-raw.png -gravity North -extent 100%x100% favicon.png
+
+      - name: Prepare GitHub Pages Files
+        env:
+          PAGES_URL: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/
+        run: |
+          # Extract project title from main.tex — grab the \ProjectTitle{...} block,
+          # strip the command wrapper, collapse multi-line titles, clean up whitespace
+          REPORT_TITLE=$(awk '/\\ProjectTitle\{/,/\}/' main.tex \
+            | sed 's/.*\\ProjectTitle{//; s/}.*//' \
+            | tr -d '\n\\' \
+            | sed 's/^[[:space:]]*//; s/[[:space:]]*$//' )
+
+          # Fallback if extraction fails
+          REPORT_TITLE=${REPORT_TITLE:-"VTU Mini-Project Report"}
+
           mkdir public
           cp main.pdf public/
-          cat > public/index.html <<'EOF'
+          cp og-image.png public/
+          cp favicon.png public/
+
+          cat > public/index.html <<EOF
           <!DOCTYPE html>
           <html lang="en">
           <head>
             <meta charset="utf-8">
             <meta http-equiv="refresh" content="0; url=main.pdf">
-            <title>Redirecting to PDF...</title>
+            <title>${REPORT_TITLE}</title>
+
+            <link rel="icon" type="image/png" href="favicon.png">
+
+            <meta name="description" content="${REPORT_TITLE} — VTU Mini-Project Report, DSCE.">
+
+            <meta property="og:type" content="website">
+            <meta property="og:url" content="${PAGES_URL}">
+            <meta property="og:title" content="${REPORT_TITLE}">
+            <meta property="og:description" content="${REPORT_TITLE} — VTU Mini-Project Report, DSCE.">
+            <meta property="og:image" content="${PAGES_URL}og-image.png">
+
+            <meta property="twitter:card" content="summary_large_image">
+            <meta property="twitter:url" content="${PAGES_URL}">
+            <meta property="twitter:title" content="${REPORT_TITLE}">
+            <meta property="twitter:description" content="${REPORT_TITLE} — VTU Mini-Project Report, DSCE.">
+            <meta property="twitter:image" content="${PAGES_URL}og-image.png">
           </head>
           <body>
             <p>Opening PDF... <a href="main.pdf">click here if it doesn't open</a>.</p>

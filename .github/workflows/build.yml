@@ -31,12 +31,8 @@ jobs:
           root_file: main.tex
           latexmk_use_bibtex: true
 
-      - name: Generate OG Image and Favicon from PDF
+      - name: Generate Favicon from PDF
         run: |
-          # OG image — page 1 at 150 DPI, good for social share previews
-          pdftoppm -r 150 -png -singlefile main.pdf og-image
-
-          # Favicon — same page at low DPI, cropped to square via ImageMagick
           pdftoppm -r 32 -png -singlefile main.pdf favicon-raw
           convert favicon-raw.png -gravity North -extent 100%x100% favicon.png
 
@@ -47,8 +43,6 @@ jobs:
         run: |
           mkdir public
           cp main.pdf public/
-          cp og-image.png public/
-          cp favicon.png public/
 
           cat > public/index.html <<'EOF'
           <!DOCTYPE html>
@@ -391,6 +385,23 @@ jobs:
           # Inject dynamic URLs into the HTML
           sed -i "s|REPO_URL_PLACEHOLDER|${REPO_URL}|g" public/index.html
           sed -i "s|PAGES_URL_PLACEHOLDER|${PAGES_URL}|g" public/index.html
+
+      - name: Screenshot Landing Page for OG Image
+        run: |
+          npm install puppeteer
+          node -e "
+            const puppeteer = require('puppeteer');
+            (async () => {
+              const browser = await puppeteer.launch({ args: ['--no-sandbox'] });
+              const page = await browser.newPage();
+              await page.setViewport({ width: 1200, height: 630 });
+              await page.goto('file://' + process.cwd() + '/public/index.html');
+              await new Promise(r => setTimeout(r, 1500));
+              await page.screenshot({ path: 'public/og-image.png' });
+              await browser.close();
+            })();
+          "
+          cp favicon.png public/
 
       - name: Upload Pages Artifact
         uses: actions/upload-pages-artifact@v3

@@ -1,4 +1,4 @@
-name: Build and Deploy LaTeX PDF
+name: Build and Deploy LaTeX PDF (Landing Page)
 
 on:
   push:
@@ -31,12 +31,24 @@ jobs:
           root_file: main.tex
           latexmk_use_bibtex: true
 
+      - name: Generate OG Image and Favicon from PDF
+        run: |
+          # OG image — page 1 at 150 DPI, good for social share previews
+          pdftoppm -r 150 -png -singlefile main.pdf og-image
+
+          # Favicon — same page at low DPI, cropped to square via ImageMagick
+          pdftoppm -r 32 -png -singlefile main.pdf favicon-raw
+          convert favicon-raw.png -gravity North -extent 100%x100% favicon.png
+
       - name: Prepare GitHub Pages Files
         env:
           REPO_URL: ${{ github.server_url }}/${{ github.repository }}
+          PAGES_URL: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/
         run: |
           mkdir public
           cp main.pdf public/
+          cp og-image.png public/
+          cp favicon.png public/
 
           cat > public/index.html <<'EOF'
           <!DOCTYPE html>
@@ -46,22 +58,21 @@ jobs:
             <meta name="viewport" content="width=device-width, initial-scale=1">
             <title>VTU Mini-Project Report | LaTeX Template</title>
 
-            <link rel="icon" type="image/png" href="https://github.com/Ash-the-k.png">
+            <link rel="icon" type="image/png" href="favicon.png">
 
-            <meta name="title" content="DSCE LaTeX Template">
             <meta name="description" content="Build • Compile • Submit. The automated LaTeX framework for DSCE project reports.">
 
             <meta property="og:type" content="website">
-            <meta property="og:url" content="https://ash-the-k.github.io/dsce-miniproject-report-latex-template/">
-            <meta property="og:title" content="DSCE LaTeX Template">
+            <meta property="og:url" content="PAGES_URL_PLACEHOLDER">
+            <meta property="og:title" content="VTU Mini-Project Report | LaTeX Template">
             <meta property="og:description" content="Build • Compile • Submit. A high-fidelity LaTeX framework for DSCE project reports.">
-            <meta property="og:image" content="https://github.com/Ash-the-k.png">
+            <meta property="og:image" content="PAGES_URL_PLACEHOLDERog-image.png">
 
             <meta property="twitter:card" content="summary_large_image">
-            <meta property="twitter:url" content="https://ash-the-k.github.io/dsce-miniproject-report-latex-template/">
-            <meta property="twitter:title" content="DSCE LaTeX Template">
+            <meta property="twitter:url" content="PAGES_URL_PLACEHOLDER">
+            <meta property="twitter:title" content="VTU Mini-Project Report | LaTeX Template">
             <meta property="twitter:description" content="Build • Compile • Submit. The automated LaTeX framework for DSCE project reports.">
-            <meta property="twitter:image" content="https://github.com/Ash-the-k.png">
+            <meta property="twitter:image" content="PAGES_URL_PLACEHOLDERog-image.png">
 
             <style>
               * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -377,8 +388,9 @@ jobs:
           </html>
           EOF
 
-          # Inject the current repo URL into the HTML
+          # Inject dynamic URLs into the HTML
           sed -i "s|REPO_URL_PLACEHOLDER|${REPO_URL}|g" public/index.html
+          sed -i "s|PAGES_URL_PLACEHOLDER|${PAGES_URL}|g" public/index.html
 
       - name: Upload Pages Artifact
         uses: actions/upload-pages-artifact@v3

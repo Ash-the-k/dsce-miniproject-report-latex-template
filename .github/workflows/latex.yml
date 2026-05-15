@@ -239,6 +239,91 @@ jobs:
                 font-size: 0.8rem;
               }
                         .footer a { color: #475569; text-decoration: none; transition: 0.2s; }
+
+              @media (max-width: 640px) {
+                body {
+                  min-height: 100svh;
+                  padding: 1.5rem;
+                  overflow-x: hidden;
+                  overflow-y: auto;
+                }
+
+                .card {
+                  max-width: 100%;
+                  padding: 2rem 1.4rem;
+                  border-radius: 24px;
+                }
+
+                .badge {
+                  font-size: 0.65rem;
+                  padding: 0.45rem 0.8rem;
+                  margin-bottom: 1.5rem;
+                }
+
+                h1 {
+                  font-size: 2rem;
+                  line-height: 1.08;
+                  margin-bottom: 1rem;
+                }
+
+                .sub {
+                  font-size: 0.78rem;
+                  gap: 8px;
+                  margin-bottom: 1.5rem;
+                  flex-wrap: wrap;
+                }
+
+                .description {
+                  font-size: 0.92rem;
+                  line-height: 1.65;
+                  margin-bottom: 2rem;
+                }
+
+                .button-group {
+                  flex-direction: column;
+                  gap: 0.8rem;
+                }
+
+                .btn {
+                  width: 100%;
+                  padding: 0.95rem;
+                  font-size: 0.88rem;
+                }
+
+                .divider {
+                  margin: 2rem 0 1.25rem 0;
+                }
+
+                .footer {
+                  flex-direction: column;
+                  gap: 0.6rem;
+                  align-items: flex-start;
+                  font-size: 0.75rem;
+                }
+              }
+
+              @media (max-width: 380px) {
+                body {
+                  padding: 1.25rem;
+                }
+
+                .card {
+                  padding: 1.7rem 1.15rem;
+                  border-radius: 22px;
+                }
+
+                h1 {
+                  font-size: 1.75rem;
+                }
+
+                .description {
+                  font-size: 0.88rem;
+                }
+
+                .btn {
+                  font-size: 0.84rem;
+                }
+              }
             </style>
           </head>
           <body>

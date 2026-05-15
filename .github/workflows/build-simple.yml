@@ -35,6 +35,9 @@ jobs:
           root_file: main.tex
           latexmk_use_bibtex: true
 
+      - name: Install Dependencies
+        run: sudo apt-get install -y poppler-utils imagemagick
+
       - name: Generate OG Image and Favicon from PDF
         run: |
           pdftoppm -r 150 -png -singlefile main.pdf og-image

@@ -31,6 +31,9 @@ jobs:
           root_file: main.tex
           latexmk_use_bibtex: true
 
+      - name: Install Dependencies
+        run: sudo apt-get install -y poppler-utils imagemagick
+
       - name: Generate Favicon from PDF
         run: |
           pdftoppm -r 32 -png -singlefile main.pdf favicon-raw

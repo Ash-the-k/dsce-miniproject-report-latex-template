@@ -44,6 +44,28 @@ jobs:
             <meta name="viewport" content="width=device-width, initial-scale=1">
             <title>VTU Mini-Project Report | LaTeX Template</title>
 
+            <!-- Tab Icon -->
+            <link rel="icon" type="image/png" href="https://github.com/Ash-the-k.png">
+
+            <!-- Primary Meta Tags (What shows up in Google/Search) -->
+            <title>DSCE LaTeX Template</title>
+            <meta name="title" content="DSCE LaTeX Template">
+            <meta name="description" content="Build • Compile • Submit. The automated LaTeX framework for DSCE project reports.">
+
+            <!-- Open Graph / Facebook / WhatsApp (The "Share" text and image) -->
+            <meta property="og:type" content="website">
+            <meta property="og:url" content="https://ash-the-k.github.io/dsce-miniproject-report-latex-template/">
+            <meta property="og:title" content="DSCE LaTeX Template">
+            <meta property="og:description" content="Build • Compile • Submit. A high-fidelity LaTeX framework for DSCE project reports.">
+            <meta property="og:image" content="https://github.com/Ash-the-k.png">
+
+            <!-- Twitter Meta Tags -->
+            <meta property="twitter:card" content="summary_large_image">
+            <meta property="twitter:url" content="https://ash-the-k.github.io/dsce-miniproject-report-latex-template/">
+            <meta property="twitter:title" content="DSCE LaTeX Template">
+            <meta property="twitter:description" content="Build • Compile • Submit. The automated LaTeX framework for DSCE project reports.">
+            <meta property="twitter:image" content="https://github.com/Ash-the-k.png">
+
             <style>
               * {
                 margin: 0;

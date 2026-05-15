@@ -1,0 +1,27 @@
+# ================= macOS =================
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# ================= LaTeX Build Artifacts =================
+*.aux
+*.bbl
+*.blg
+*.fdb_latexmk
+*.fls
+*.lof
+*.log
+*.lot
+*.out
+*.synctex.gz
+*.toc
+
+# ================= Output PDF =================
+# The compiled PDF is intentionally tracked so people can preview
+# without compiling. Comment out the line below to ignore it.
+# main.pdf
+
+# ================= Editor Artifacts =================
+.vscode/
+*.bak
+.overleaf/

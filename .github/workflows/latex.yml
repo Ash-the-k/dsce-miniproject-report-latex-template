@@ -1,0 +1,288 @@
+name: Build and Deploy LaTeX PDF
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'main.tex'
+      - 'references.bib'
+      - 'images/**'
+      - 'appendix/**'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Compile LaTeX
+        uses: xu-cheng/latex-action@v3
+        with:
+          root_file: main.tex
+          latexmk_use_bibtex: true
+
+      - name: Prepare GitHub Pages Files
+        run: |
+          mkdir public
+          cp main.pdf public/
+          cat > public/index.html <<'EOF'
+          <!DOCTYPE html>
+          <html lang="en">
+          <head>
+            <meta charset="utf-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1">
+            <title>VTU Mini-Project Report | LaTeX Template</title>
+            <style>
+              * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+              }
+
+              body {
+                background: #0a0c10;
+                font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', Helvetica, Arial, sans-serif;
+                min-height: 100vh;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                padding: 2rem;
+                color: #e8edf2;
+                font-weight: 400;
+                line-height: 1.5;
+                -webkit-font-smoothing: antialiased;
+              }
+
+              /* minimalist glass-morphism without heavy blur – clean dark elegance */
+              .card {
+                max-width: 560px;
+                width: 100%;
+                background: #111317;
+                border-radius: 28px;
+                padding: 2.8rem 3rem;
+                box-shadow: 0 20px 35px -12px rgba(0, 0, 0, 0.5), 0 1px 0px 0px rgba(255, 255, 255, 0.02) inset;
+                transition: all 0.2s ease;
+                border: 1px solid rgba(255, 255, 255, 0.04);
+              }
+
+              /* quiet, refined badge – no glows, no emojis */
+              .badge {
+                display: inline-block;
+                background: rgba(255, 255, 255, 0.03);
+                color: #b3c7e3;
+                font-size: 0.7rem;
+                font-weight: 500;
+                letter-spacing: 0.5px;
+                text-transform: uppercase;
+                padding: 0.3rem 0.85rem;
+                border-radius: 40px;
+                margin-bottom: 1.75rem;
+                border: 0.5px solid rgba(255, 255, 255, 0.08);
+                backdrop-filter: blur(2px);
+              }
+
+              h1 {
+                font-size: 1.7rem;
+                font-weight: 500;
+                letter-spacing: -0.3px;
+                color: #ffffff;
+                margin-bottom: 0.75rem;
+                line-height: 1.3;
+              }
+
+              .title-light {
+                font-weight: 380;
+                color: #cdd9f4;
+              }
+
+              .sub {
+                font-size: 0.9rem;
+                color: #9aa9bb;
+                margin-bottom: 1.9rem;
+                border-left: 2px solid rgba(100, 150, 220, 0.5);
+                padding-left: 0.9rem;
+                text-align: left;
+                font-weight: 400;
+              }
+
+              .description {
+                color: #b9c3d0;
+                font-size: 0.95rem;
+                line-height: 1.65;
+                margin-bottom: 2.3rem;
+                text-align: left;
+              }
+
+              /* simplistic button group */
+              .button-group {
+                display: flex;
+                gap: 1rem;
+                flex-wrap: wrap;
+                justify-content: flex-start;
+                margin-top: 0.25rem;
+              }
+
+              .btn {
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                padding: 0.7rem 1.6rem;
+                border-radius: 60px;
+                font-size: 0.85rem;
+                font-weight: 500;
+                text-decoration: none;
+                transition: all 0.2s ease;
+                letter-spacing: 0.2px;
+                background: transparent;
+                border: 1px solid;
+                cursor: pointer;
+              }
+
+              .btn-primary {
+                background: #ffffff;
+                color: #0a0c10;
+                border-color: #ffffff;
+                box-shadow: 0 1px 2px rgba(0,0,0,0.02);
+              }
+
+              .btn-primary:hover {
+                background: #e6edf5;
+                border-color: #e6edf5;
+                transform: translateY(-1px);
+              }
+
+              .btn-secondary {
+                border-color: rgba(255, 255, 255, 0.2);
+                color: #dfe6ef;
+                background: rgba(255, 255, 255, 0.01);
+              }
+
+              .btn-secondary:hover {
+                border-color: rgba(255, 255, 255, 0.5);
+                background: rgba(255, 255, 255, 0.03);
+                transform: translateY(-1px);
+              }
+
+              /* minimal divider */
+              .divider {
+                height: 1px;
+                background: rgba(255, 255, 255, 0.05);
+                width: 100%;
+                margin: 2rem 0 1.2rem 0;
+              }
+
+              /* footer – classy, subtle */
+              .footer {
+                font-size: 0.75rem;
+                color: #6c7a8e;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                flex-wrap: wrap;
+                gap: 0.5rem;
+                letter-spacing: 0.2px;
+              }
+
+              .footer a {
+                color: #8fa0bb;
+                text-decoration: none;
+                border-bottom: 0.5px dotted rgba(143, 160, 187, 0.5);
+                transition: color 0.2s;
+              }
+
+              .footer a:hover {
+                color: #d3e2fc;
+                border-bottom-color: #d3e2fc;
+              }
+
+              .license {
+                font-family: monospace;
+                font-size: 0.7rem;
+                opacity: 0.7;
+              }
+
+              /* optional responsive refinement */
+              @media (max-width: 500px) {
+                .card {
+                  padding: 2rem 1.5rem;
+                }
+                h1 {
+                  font-size: 1.4rem;
+                }
+                .button-group {
+                  gap: 0.8rem;
+                }
+                .btn {
+                  padding: 0.6rem 1.2rem;
+                  font-size: 0.8rem;
+                }
+              }
+
+              /* simple accent hint – no emoji */
+              .accent-dot {
+                display: inline-block;
+                width: 4px;
+                height: 4px;
+                background: #a6c1ff;
+                border-radius: 50%;
+                margin-right: 6px;
+                vertical-align: middle;
+                opacity: 0.7;
+              }
+            </style>
+          </head>
+          <body>
+            <div class="card">
+              <span class="badge">VTU • DSCE • CSE Data Science</span>
+              <h1>
+                Mini-Project Report<br>
+                <span class="title-light">LaTeX Template</span>
+              </h1>
+              <div class="sub">
+                <span class="accent-dot"></span> Precise • Structured • Submission-ready
+              </div>
+              <div class="description">
+                A clean and structured LaTeX template built for Dayananda Sagar College of Engineering 
+          VTU mini-project submissions. Designed for clarity, formatting consistency, and professional 
+          academic documentation.
+              </div>
+              <div class="button-group">
+                <a class="btn btn-primary" href="main.pdf" target="_blank">View PDF</a>
+                <a class="btn btn-secondary" href="https://github.com/Ash-the-k/dsce-miniproject-latex-template" target="_blank">GitHub →</a>
+              </div>
+              <div class="divider"></div>
+              <div class="footer">
+                <span>Built by <a href="https://github.com/Ash-the-k/" target="_blank">Ashlesh Kanchan</a></span>
+                <span class="license">MIT License</span>
+              </div>
+            </div>
+          </body>
+          </html>
+          EOF
+
+      - name: Upload Pages Artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: public
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    permissions:
+      pages: write
+      id-token: write
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

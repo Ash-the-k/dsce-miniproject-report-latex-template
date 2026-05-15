@@ -32,6 +32,8 @@ jobs:
           latexmk_use_bibtex: true
 
       - name: Prepare GitHub Pages Files
+        env:
+          REPO_URL: ${{ github.server_url }}/${{ github.repository }}
         run: |
           mkdir public
           cp main.pdf public/
@@ -44,22 +46,17 @@ jobs:
             <meta name="viewport" content="width=device-width, initial-scale=1">
             <title>VTU Mini-Project Report | LaTeX Template</title>
 
-            <!-- Tab Icon -->
             <link rel="icon" type="image/png" href="https://github.com/Ash-the-k.png">
 
-            <!-- Primary Meta Tags (What shows up in Google/Search) -->
-            <title>DSCE LaTeX Template</title>
             <meta name="title" content="DSCE LaTeX Template">
             <meta name="description" content="Build • Compile • Submit. The automated LaTeX framework for DSCE project reports.">
 
-            <!-- Open Graph / Facebook / WhatsApp (The "Share" text and image) -->
             <meta property="og:type" content="website">
             <meta property="og:url" content="https://ash-the-k.github.io/dsce-miniproject-report-latex-template/">
             <meta property="og:title" content="DSCE LaTeX Template">
             <meta property="og:description" content="Build • Compile • Submit. A high-fidelity LaTeX framework for DSCE project reports.">
             <meta property="og:image" content="https://github.com/Ash-the-k.png">
 
-            <!-- Twitter Meta Tags -->
             <meta property="twitter:card" content="summary_large_image">
             <meta property="twitter:url" content="https://ash-the-k.github.io/dsce-miniproject-report-latex-template/">
             <meta property="twitter:title" content="DSCE LaTeX Template">
@@ -67,11 +64,7 @@ jobs:
             <meta property="twitter:image" content="https://github.com/Ash-the-k.png">
 
             <style>
-              * {
-                margin: 0;
-                padding: 0;
-                box-sizing: border-box;
-              }
+              * { margin: 0; padding: 0; box-sizing: border-box; }
 
               body {
                 background-color: #000000;
@@ -87,15 +80,13 @@ jobs:
                 overflow: hidden;
               }
 
-              /* Particle Canvas Layer */
               #particle-canvas {
                 position: absolute;
                 inset: 0;
-                z-index: -1; /* Sits behind the card but above everything else */
+                z-index: -1;
                 pointer-events: none;
               }
 
-              /* Fixed Technical Grid */
               .grid {
                 position: absolute;
                 inset: 0;
@@ -106,7 +97,6 @@ jobs:
                 z-index: -3;
               }
 
-              /* RESTORED INTENSIFIED MOTION BLOBS */
               .glow-wrapper {
                 position: absolute;
                 inset: 0;
@@ -115,73 +105,55 @@ jobs:
                 opacity: 0.5;
               }
 
-              .sphere {
-                position: absolute;
-                border-radius: 50%;
-              }
+              .sphere { position: absolute; border-radius: 50%; }
 
               .s1 {
-                width: 600px;
-                height: 600px;
+                width: 600px; height: 600px;
                 background: radial-gradient(circle, #3b82f6, transparent 70%);
-                top: -10%;
-                left: -10%;
+                top: -10%; left: -10%;
                 animation: move-large 20s infinite linear;
               }
-
               .s2 {
-                width: 500px;
-                height: 500px;
+                width: 500px; height: 500px;
                 background: radial-gradient(circle, #8b5cf6, transparent 70%);
-                bottom: -10%;
-                right: -10%;
+                bottom: -10%; right: -10%;
                 animation: move-diagonal 25s infinite alternate ease-in-out;
               }
-
               .s3 {
-                width: 400px;
-                height: 400px;
+                width: 400px; height: 400px;
                 background: radial-gradient(circle, #06b6d4, transparent 70%);
-                top: 20%;
-                left: 30%;
+                top: 20%; left: 30%;
                 animation: move-random-fast 15s infinite alternate ease-in-out;
               }
-
               .s4 {
-                width: 350px;
-                height: 350px;
+                width: 350px; height: 350px;
                 background: radial-gradient(circle, #1e40af, transparent 70%);
-                bottom: 20%;
-                left: 10%;
+                bottom: 20%; left: 10%;
                 animation: move-pulse 18s infinite reverse ease-in-out;
               }
 
               @keyframes move-large {
-                0% { transform: translate(0, 0) rotate(0deg) scale(1); }
-                50% { transform: translate(30vw, 20vh) rotate(180deg) scale(1.2); }
+                0%   { transform: translate(0, 0) rotate(0deg) scale(1); }
+                50%  { transform: translate(30vw, 20vh) rotate(180deg) scale(1.2); }
                 100% { transform: translate(0, 0) rotate(360deg) scale(1); }
               }
-
               @keyframes move-diagonal {
-                0% { transform: translate(0, 0) scale(1.1); }
-                50% { transform: translate(-40vw, -40vh) scale(0.8); }
+                0%   { transform: translate(0, 0) scale(1.1); }
+                50%  { transform: translate(-40vw, -40vh) scale(0.8); }
                 100% { transform: translate(-10vw, 10vh) scale(1.2); }
               }
-
               @keyframes move-random-fast {
-                0% { transform: translate(0, 0) rotate(0deg); }
-                25% { transform: translate(20vw, -10vh); }
-                50% { transform: translate(-10vw, 20vh); }
-                75% { transform: translate(15vw, 15vh); }
+                0%   { transform: translate(0, 0) rotate(0deg); }
+                25%  { transform: translate(20vw, -10vh); }
+                50%  { transform: translate(-10vw, 20vh); }
+                75%  { transform: translate(15vw, 15vh); }
                 100% { transform: translate(0, 0) rotate(-360deg); }
               }
-
               @keyframes move-pulse {
                 0%, 100% { transform: scale(1) translate(0, 0); opacity: 0.6; }
-                50% { transform: scale(1.4) translate(20vw, -15vh); opacity: 1; }
+                50%       { transform: scale(1.4) translate(20vw, -15vh); opacity: 1; }
               }
 
-              /* Card Layout */
               .card {
                 position: relative;
                 max-width: 540px;
@@ -195,11 +167,7 @@ jobs:
                 transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
                 z-index: 10;
               }
-
-              .card:hover {
-                transform: translateY(-8px);
-                border-color: rgba(255, 255, 255, 0.12);
-              }
+              .card:hover { transform: translateY(-8px); border-color: rgba(255, 255, 255, 0.12); }
 
               .badge {
                 display: inline-block;
@@ -223,11 +191,7 @@ jobs:
                 margin-bottom: 1.2rem;
                 color: #ffffff;
               }
-
-              .title-light {
-                color: #64748b;
-                font-weight: 300;
-              }
+              .title-light { color: #64748b; font-weight: 300; }
 
               .sub {
                 color: #475569;
@@ -238,10 +202,8 @@ jobs:
                 align-items: center;
                 gap: 10px;
               }
-
               .dot {
-                width: 5px;
-                height: 5px;
+                width: 5px; height: 5px;
                 background: #3b82f6;
                 border-radius: 50%;
                 box-shadow: 0 0 10px #3b82f6;
@@ -255,10 +217,7 @@ jobs:
                 margin-bottom: 2.5rem;
               }
 
-              .button-group {
-                display: flex;
-                gap: 1rem;
-              }
+              .button-group { display: flex; gap: 1rem; }
 
               .btn {
                 flex: 1;
@@ -273,34 +232,16 @@ jobs:
                 text-decoration: none;
                 transition: 0.2s ease;
               }
-
-              .btn-primary {
-                background: #ffffff;
-                color: #020305;
-              }
-
-              .btn-primary:hover {
-                background: #f1f5f9;
-                transform: translateY(-2px);
-              }
-
+              .btn-primary { background: #ffffff; color: #020305; }
+              .btn-primary:hover { background: #f1f5f9; transform: translateY(-2px); }
               .btn-secondary {
                 background: rgba(255, 255, 255, 0.03);
                 color: #ffffff;
                 border: 1px solid rgba(255, 255, 255, 0.1);
               }
+              .btn-secondary:hover { background: rgba(255, 255, 255, 0.08); transform: translateY(-2px); }
 
-              .btn-secondary:hover {
-                background: rgba(255, 255, 255, 0.08);
-                transform: translateY(-2px);
-              }
-
-              .github-icon {
-                width: 18px;
-                height: 18px;
-                fill: currentColor;
-                flex-shrink: 0;
-              }
+              .github-icon { width: 18px; height: 18px; fill: currentColor; flex-shrink: 0; }
 
               .divider {
                 height: 1px;
@@ -315,130 +256,32 @@ jobs:
                 font-size: 0.8rem;
                 gap: 1rem;
               }
+              .footer a { color: #475569; text-decoration: none; transition: 0.2s; }
+              .footer a:hover { color: #94a3b8; }
 
-              .footer a {
-                color: #475569;
-                text-decoration: none;
-                transition: 0.2s;
-              }
-
-              .footer a:hover {
-                color: #94a3b8;
-              }
-
-              /* Mobile-only improvements */
               @media (max-width: 640px) {
-                body {
-                  min-height: 100svh;
-                  padding: 1.25rem;
-                  overflow: hidden;
-                }
-
-                .glow-wrapper {
-                  filter: blur(60px);
-                  opacity: 0.42;
-                }
-
-                .s1 {
-                  width: 420px;
-                  height: 420px;
-                  top: -18%;
-                  left: -35%;
-                }
-
-                .s2 {
-                  width: 360px;
-                  height: 360px;
-                  bottom: -18%;
-                  right: -35%;
-                }
-
-                .s3 {
-                  width: 300px;
-                  height: 300px;
-                  top: 22%;
-                  left: 18%;
-                }
-
-                .s4 {
-                  width: 260px;
-                  height: 260px;
-                  bottom: 18%;
-                  left: -20%;
-                }
-
-                .card {
-                  padding: 2rem 1.45rem;
-                  border-radius: 24px;
-                }
-
-                .card:hover {
-                  transform: none;
-                }
-
-                .badge {
-                  font-size: 0.68rem;
-                  padding: 0.45rem 0.8rem;
-                  margin-bottom: 1.5rem;
-                  letter-spacing: 0.8px;
-                }
-
-                h1 {
-                  font-size: 2rem;
-                  line-height: 1.12;
-                  margin-bottom: 1rem;
-                }
-
-                .sub {
-                  font-size: 0.82rem;
-                  margin-bottom: 1.6rem;
-                  gap: 8px;
-                }
-
-                .description {
-                  font-size: 0.95rem;
-                  line-height: 1.65;
-                  margin-bottom: 2rem;
-                }
-
-                .button-group {
-                  flex-direction: column;
-                  gap: 0.8rem;
-                }
-
-                .btn {
-                  width: 100%;
-                  padding: 0.95rem;
-                }
-
-                .divider {
-                  margin: 2rem 0 1.3rem 0;
-                }
-
-                .footer {
-                  flex-direction: column;
-                  gap: 0.6rem;
-                  font-size: 0.78rem;
-                }
+                body { min-height: 100svh; padding: 1.25rem; overflow: hidden; }
+                .glow-wrapper { filter: blur(60px); opacity: 0.42; }
+                .s1 { width: 420px; height: 420px; top: -18%; left: -35%; }
+                .s2 { width: 360px; height: 360px; bottom: -18%; right: -35%; }
+                .s3 { width: 300px; height: 300px; top: 22%; left: 18%; }
+                .s4 { width: 260px; height: 260px; bottom: 18%; left: -20%; }
+                .card { padding: 2rem 1.45rem; border-radius: 24px; }
+                .card:hover { transform: none; }
+                .badge { font-size: 0.68rem; padding: 0.45rem 0.8rem; margin-bottom: 1.5rem; letter-spacing: 0.8px; }
+                h1 { font-size: 2rem; line-height: 1.12; margin-bottom: 1rem; }
+                .sub { font-size: 0.82rem; margin-bottom: 1.6rem; gap: 8px; }
+                .description { font-size: 0.95rem; line-height: 1.65; margin-bottom: 2rem; }
+                .button-group { flex-direction: column; gap: 0.8rem; }
+                .btn { width: 100%; padding: 0.95rem; }
+                .divider { margin: 2rem 0 1.3rem 0; }
+                .footer { flex-direction: column; gap: 0.6rem; font-size: 0.78rem; }
               }
-
               @media (max-width: 380px) {
-                body {
-                  padding: 1rem;
-                }
-
-                .card {
-                  padding: 1.75rem 1.2rem;
-                  border-radius: 22px;
-                }
-
-                h1 {
-                  font-size: 1.78rem;
-                }
-
-                .description {
-                  font-size: 0.9rem;
-                }
+                body { padding: 1rem; }
+                .card { padding: 1.75rem 1.2rem; border-radius: 22px; }
+                h1 { font-size: 1.78rem; }
+                .description { font-size: 0.9rem; }
               }
             </style>
           </head>
@@ -456,26 +299,15 @@ jobs:
 
             <div class="card">
               <span class="badge">VTU • DSCE • CSE DS</span>
-
-              <h1>
-                Mini-Project<br>
-                <span class="title-light">LaTeX Template</span>
-              </h1>
-
-              <div class="sub">
-                <span class="dot"></span>
-                Build • Compile • Submit
-              </div>
-
+              <h1>Mini-Project<br><span class="title-light">LaTeX Template</span></h1>
+              <div class="sub"><span class="dot"></span>Build • Compile • Submit</div>
               <p class="description">
                 A high-fidelity LaTeX framework for DSCE Mini-Project reports.
                 Saves hours of formatting so you can focus on what matters.
               </p>
-
               <div class="button-group">
                 <a class="btn btn-primary" href="main.pdf" target="_blank">View PDF</a>
-
-                <a class="btn btn-secondary" href="https://github.com/Ash-the-k/dsce-miniproject-report-latex-template" target="_blank">
+                <a class="btn btn-secondary" href="REPO_URL_PLACEHOLDER" target="_blank">
                   <svg class="github-icon" viewBox="0 0 24 24">
                     <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.43.372.823 1.102.823 2.222 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/>
                   </svg>
@@ -483,12 +315,11 @@ jobs:
                   <span style="opacity: 0.6; margin-left: 2px;">→</span>
                 </a>
               </div>
-
               <div class="divider"></div>
-
               <div class="footer">
                 <span>Built by <a href="https://github.com/Ash-the-k/" target="_blank">Ashlesh Kanchan</a></span>
-                <a href="https://github.com/Ash-the-k/dsce-miniproject-report-latex-template/blob/main/LICENSE" target="_blank" rel="noopener noreferrer" style="font-family: monospace; opacity: 0.6; color: inherit; text-decoration: none;">MIT License</a>
+                <span>Template by <a href="https://github.com/Ash-the-k/dsce-miniproject-report-latex-template" target="_blank">Ash-the-k</a></span>
+                <a href="REPO_URL_PLACEHOLDER/blob/main/LICENSE" target="_blank" rel="noopener noreferrer" style="font-family: monospace; opacity: 0.6; color: inherit; text-decoration: none;">MIT License</a>
               </div>
             </div>
 
@@ -501,15 +332,11 @@ jobs:
                 canvas.width = window.innerWidth;
                 canvas.height = window.innerHeight;
               }
-
               window.addEventListener('resize', resize);
               resize();
 
               class Grain {
-                constructor() {
-                  this.init();
-                }
-
+                constructor() { this.init(); }
                 init() {
                   this.x = Math.random() * canvas.width;
                   this.y = Math.random() * canvas.height;
@@ -518,17 +345,14 @@ jobs:
                   this.speedY = (Math.random() - 0.5) * 1.5;
                   this.opacity = Math.random() * 0.4;
                 }
-
                 update() {
                   this.x += this.speedX;
                   this.y += this.speedY;
-
-                  if (this.x > canvas.width) this.x = 0;
-                  if (this.x < 0) this.x = canvas.width;
+                  if (this.x > canvas.width)  this.x = 0;
+                  if (this.x < 0)             this.x = canvas.width;
                   if (this.y > canvas.height) this.y = 0;
-                  if (this.y < 0) this.y = canvas.height;
+                  if (this.y < 0)             this.y = canvas.height;
                 }
-
                 draw() {
                   ctx.fillStyle = `rgba(255, 255, 255, ${this.opacity})`;
                   ctx.fillRect(this.x, this.y, this.size, this.size);
@@ -537,19 +361,12 @@ jobs:
 
               function initParticles() {
                 particles = [];
-                for (let i = 0; i < 150; i++) {
-                  particles.push(new Grain());
-                }
+                for (let i = 0; i < 150; i++) particles.push(new Grain());
               }
 
               function animate() {
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-                particles.forEach(p => {
-                  p.update();
-                  p.draw();
-                });
-
+                particles.forEach(p => { p.update(); p.draw(); });
                 requestAnimationFrame(animate);
               }
 
@@ -559,6 +376,9 @@ jobs:
           </body>
           </html>
           EOF
+
+          # Inject the current repo URL into the HTML
+          sed -i "s|REPO_URL_PLACEHOLDER|${REPO_URL}|g" public/index.html
 
       - name: Upload Pages Artifact
         uses: actions/upload-pages-artifact@v3

@@ -262,11 +262,62 @@ Supported languages: `Python`, `bash`, `TeX`, `SQL`, `Java`, `C`, `C++`
 
 ---
 
+## GitHub Pages Setup (Auto-Compiled PDF)
+
+This repo includes two workflow options. Both compile `main.tex` on push and deploy to GitHub Pages — pick the one you want.
+
+### Option A — Landing page (default)
+
+`build.yml` deploys a landing page with a **View PDF** button and a **Get Template** button.
+
+The **Get Template** button automatically points to **your repo** — not the original template repo. So anyone who finds your deployed page can clone your version directly. A small **"Template by Ash-the-k"** credit in the footer links back to the original template.
+
+### Option B — Direct PDF redirect
+
+`build-simple.yml` skips the landing page entirely — visiting your Pages URL opens the PDF immediately.
+Good if you just want a shareable link that always points to the latest compiled version.
+
+**To switch to Option B:**
+1. Delete `.github/workflows/build.yml`
+2. Rename `.github/workflows/build-simple.yml` to `build.yml`
+
+> Don't keep both active at the same time — they'll conflict on GitHub Pages deployments.
+
+---
+
+**One-time setup — do this after pushing the repo for the first time:**
+
+1. Go to your repo on GitHub
+2. Click **Settings** → **Actions** → **General**
+3. Scroll down to **Workflow permissions**
+4. Select **Read and write permissions** → click **Save**
+5. Click **Settings** → **Pages** (left sidebar)
+6. Under **Source**, select **GitHub Actions**
+7. Click **Save**
+
+The next push to `main` triggers a build automatically. To trigger manually:
+
+1. Go to the **Actions** tab
+2. Click the workflow name in the left sidebar
+3. Click **Run workflow** → **Run workflow**
+
+**Your Pages URL:**
+```
+https://<your-github-username>.github.io/<your-repo-name>/
+```
+
+**Direct PDF link** (works with both options):
+```
+https://<your-github-username>.github.io/<your-repo-name>/main.pdf
+```
+
+---
+
 ## Credits
 
 Created by [Ashlesh Kanchan](https://github.com/Ash-the-k/) — Dept. of CSE (Data Science), DSCE, Batch 2023–24.
 
-Originally built for our own project, then cleaned up and generalized as a reusable template for future batches.
+Built from scratch for a third-year mini-project, then cleaned up and open-sourced as a reusable template for future batches.
 
 ---
 

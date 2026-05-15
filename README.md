@@ -272,4 +272,4 @@ Originally built for our own project, then cleaned up and generalized as a reusa
 
 ## License
 
-MIT License — free to use, modify, and share with attribution. See `LICENSE` for details.
+MIT License — free to use, modify, and share with attribution. See [`LICENSE`](LICENSE) for details.

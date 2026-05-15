@@ -9,6 +9,7 @@ on:
       - 'references.bib'
       - 'images/**'
       - 'appendix/**'
+      - '.github/workflows/**'
   workflow_dispatch:
 
 permissions:
